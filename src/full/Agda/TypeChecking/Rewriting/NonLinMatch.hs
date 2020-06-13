@@ -121,6 +121,22 @@ data PostponedEquation = PostponedEquation
   }
 type PostponedEquations = [PostponedEquation]
 
+info :: (PrettyTCM t, PrettyTCM a, PrettyTCM b) => String -> Telescope -> t -> a -> b -> NLM ()
+info s gamma t p v = do
+  sub <- use nlmSub
+  traceSDoc 
+    "rewriting:rewrite" 
+    20 
+    ("=============================="
+    $$ "LOC:" <+> pretty s
+    $$ "TERM:" <+> prettyTCM v
+    $$ "PATT:" <+> prettyTCM p
+    $$ "TYPE:" <+> prettyTCM t
+    $$ "SUBST: " <+> pretty sub 
+    $$ "GAMMA: " <+> prettyTCM gamma
+    $$ "==============================")
+    $ return ()
+
 -- | Match a non-linear pattern against a neutral term,
 --   returning a substitution.
 
